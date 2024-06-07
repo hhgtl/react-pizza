@@ -1,4 +1,19 @@
+import { useState } from 'react';
+
 const Sort = () => {
+  const [isVisiblePopup, setVisiblePopup] = useState(false);
+  const [valueSortCategories, setValueSortCategories] = useState(0);
+
+  const toggleVisiblePopup = () => {
+    setVisiblePopup(!isVisiblePopup);
+  };
+
+  const sortCategories = ['популярності', 'ціні', 'алфавіту'];
+  const setSortCategories = (categoriesId) => {
+    setValueSortCategories(categoriesId);
+    setVisiblePopup(false);
+  };
+
   return (
     <div className="sort">
       <div className="sort__label">
@@ -15,15 +30,23 @@ const Sort = () => {
           />
         </svg>
         <b>Сортування за:</b>
-        <span>популярності</span>
+        <span onClick={toggleVisiblePopup}>{sortCategories[valueSortCategories]}</span>
       </div>
-      <div className="sort__popup">
-        <ul>
-          <li className="active">популярності</li>
-          <li>ціні</li>
-          <li>алфавіту</li>
-        </ul>
-      </div>
+      {isVisiblePopup ? (
+        <div className="sort__popup">
+          <ul>
+            {sortCategories.map((categories, i) => (
+              <li
+                key={i}
+                onClick={() => setSortCategories(i)}
+                className={sortCategories[valueSortCategories] === categories ? 'active' : ''}
+              >
+                {categories}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
     </div>
   );
 };
