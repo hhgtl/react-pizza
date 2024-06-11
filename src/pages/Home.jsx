@@ -3,7 +3,7 @@ import PizzaBlock from '../components/PizzaBlock/PizzaBlock';
 import PizzaBlockSkeleton from '../components/PizzaBlock/PizzaBlockSkeleton';
 import Sort from '../components/Sort/Sort';
 
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const Home = () => {
   const [pizzasData, setPizzasData] = useState([]);
@@ -15,9 +15,10 @@ const Home = () => {
         setPizzasData(data);
         setIsLoadingPizza(false);
       });
+    window.scrollTo(0, 0);
   }, []);
   return (
-    <Fragment>
+    <div className="container">
       <div className="content__top">
         <Categories />
         <Sort />
@@ -28,7 +29,7 @@ const Home = () => {
           ? [...new Array(6)].map((_, i) => <PizzaBlockSkeleton key={i} />)
           : pizzasData.map((item) => <PizzaBlock key={item.id} {...item} />)}
       </div>
-    </Fragment>
+    </div>
   );
 };
 
