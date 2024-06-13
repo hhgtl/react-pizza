@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const Sort = () => {
+const Sort = ({ getSortCategories }) => {
   const [isVisiblePopup, setVisiblePopup] = useState(false);
   const [valueSortCategories, setValueSortCategories] = useState(0);
 
@@ -9,11 +9,12 @@ const Sort = () => {
   };
 
   const sortCategories = ['популярності', 'ціні', 'алфавіту'];
-  const setSortCategories = (categoriesId) => {
+
+  const setAndPushSortCategories = (categoriesId) => {
     setValueSortCategories(categoriesId);
     setVisiblePopup(false);
+    getSortCategories(categoriesId);
   };
-
   return (
     <div className="sort">
       <div className="sort__label">
@@ -38,7 +39,7 @@ const Sort = () => {
             {sortCategories.map((categories, i) => (
               <li
                 key={i}
-                onClick={() => setSortCategories(i)}
+                onClick={() => setAndPushSortCategories(i)}
                 className={sortCategories[valueSortCategories] === categories ? 'active' : ''}
               >
                 {categories}
