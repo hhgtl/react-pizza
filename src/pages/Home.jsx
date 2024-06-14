@@ -5,7 +5,7 @@ import Sort from '../components/Sort/Sort';
 
 import { useCallback, useEffect, useState } from 'react';
 
-const Home = () => {
+const Home = ({ searchValue }) => {
   const [pizzasData, setPizzasData] = useState([]);
   const [isLoadingPizza, setIsLoadingPizza] = useState(true);
 
@@ -38,16 +38,24 @@ const Home = () => {
       // Сортуємо по типу(Популярності,ціні,алфавіту)
       if (categoriesAndSortParameters.categoriesId === 0) {
         // Сортування по популярності
-        setPizzasData(sortPizzaByCategorie.sort((a, b) => b.rating - a.rating));
+        sortPizzaByCategorie.sort((a, b) => b.rating - a.rating);
       } else if (categoriesAndSortParameters.categoriesId === 1) {
         // Сортування по ціні
-        setPizzasData(sortPizzaByCategorie.sort((a, b) => b.price - a.price));
+        sortPizzaByCategorie.sort((a, b) => b.price - a.price);
       } else if (categoriesAndSortParameters.categoriesId === 2) {
         // Сортування по алфавіту
-        setPizzasData(sortPizzaByCategorie.sort((a, b) => a.title.localeCompare(b.title)));
+        sortPizzaByCategorie.sort((a, b) => a.title.localeCompare(b.title));
       }
+      debugger;
+      setPizzasData(
+        searchValue.length === 0
+          ? sortPizzaByCategorie
+          : sortPizzaByCategorie.filter((item) =>
+              item.title.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase()),
+            ),
+      );
     },
-    [categoriesAndSortParameters.categoriesId, categoriesAndSortParameters.selectId],
+    [categoriesAndSortParameters.categoriesId, categoriesAndSortParameters.selectId, searchValue],
   );
   useEffect(() => {
     fetch('https://666438f6932baf9032aa655c.mockapi.io/react-pizza')
